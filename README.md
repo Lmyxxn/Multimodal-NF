@@ -28,12 +28,13 @@ The project is built using **Python 3.10.18** and is optimized for CUDA 12.1. En
 
 **1. Scene Generation**
 * **Run:** `OSM_to_SionnaScene.ipynb`
-* **Description:** Generate and customize the 3D communication scene using OpenStreetMap and SUMO data. Define environment boundaries and layouts here.
+* **Description:** Generate and customize the 3D communication scene and UAV trajctory. Define environment boundaries and layouts here.
 
 **2. Channel & Multimodal Data Synthesis**
 * **Run:** `python channel_generation.py`
 * **Description:** Synthesize near-field channels and generate synchronized multimodal data. 
-* **Customization:** Modify this script to configure antenna arrays and operating frequencies. This step utilizes the provided beam codebooks (`upa64x64_NF_codebook.pkl` or `upa64x64_NF_codebook_small.pkl`).
+* **Customization:** Modify this script to configure antenna arrays and operating frequencies.
+*  This step utilizes the provided beam codebooks (`upa64x64_NF_codebook.pkl` or `upa64x64_NF_codebook_small.pkl`).
 
 **3. Data Integration**
 * **Run:** 
