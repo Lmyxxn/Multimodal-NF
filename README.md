@@ -41,7 +41,6 @@ The project is built using **Python 3.10.18** and is optimized for CUDA 12.1. En
   python pick_image_to_h5.py
   python pick_lidar_to_h5.py
 
-```
 
 * **Description:** Process and pack the generated image and LiDAR point cloud data into efficient `.h5` files for easier handling and model training.
 
