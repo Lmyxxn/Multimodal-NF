@@ -36,7 +36,7 @@ The project is built using **Python 3.10.18** and is optimized for CUDA 12.1. En
 * **Customization:** Modify this script to configure antenna arrays and operating frequencies. This step utilizes the provided beam codebooks (`upa64x64_NF_codebook.pkl` or `upa64x64_NF_codebook_small.pkl`).
 
 **3. Data Integration**
-* **Run:** ```bash
+* **Run:** 
   python pick_image_to_h5.py
   python pick_lidar_to_h5.py
 
