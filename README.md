@@ -56,3 +56,8 @@ Two pre-computed codebooks are included for near-field beamforming:
 
 * `upa64x64_NF_codebook.pkl`: Dense codebook (90*45*16).
 * `upa64x64_NF_codebook_small.pkl`: Compact codebook, lightweight version for faster testing and lower memory footprint (20*20*10).
+
+
+## Dataset
+
+* The dataset is avaliable at: https://huggingface.co/datasets/lmyxxn/MultimodalNF
