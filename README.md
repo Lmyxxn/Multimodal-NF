@@ -60,3 +60,5 @@ Two pre-computed codebooks are included for near-field beamforming:
 **5. Dataset**
 
 * The dataset is avaliable at: https://huggingface.co/datasets/lmyxxn/MultimodalNF
+
+* More details and citations can be found at: https://lmyxxn.github.io/6GXLMIMODatasets/
