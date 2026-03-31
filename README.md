@@ -63,3 +63,19 @@ Two pre-computed codebooks are included for near-field beamforming:
 * The dataset is avaliable at: https://huggingface.co/datasets/lmyxxn/MultimodalNF
 
 * More details and citations can be found at: https://lmyxxn.github.io/6GXLMIMODatasets/
+
+
+## 🌟 Welcome & Citation
+
+We highly encourage researchers and developers to explore, experiment, and build upon this dataset and generation toolchain! Whether you are testing new channel estimation algorithms, exploring multimodal foundation models, or analyzing near-field XL-MIMO characteristics, we hope this repository serves as a valuable resource for your work. 
+
+If you find our code, dataset, or codebooks useful in your research or projects, please consider citing our paper:
+
+```bibtex
+@article{Li2026MultimodalNF,
+  author = {Li, M. and Lu, Q. and Tian, J. and Hu, H. and Han, Y. and Li, X. and Wen, C.-K. and Jin, S.},
+  title = {{Multimodal-NF: A Wireless Dataset for Near-Field Low-Altitude Sensing and Communications}},
+  journal = {arXiv preprint arXiv:2603.28280},
+  year = {2026},
+  url  = {[https://arxiv.org/abs/2603.28280](https://arxiv.org/abs/2603.28280)}
+}
