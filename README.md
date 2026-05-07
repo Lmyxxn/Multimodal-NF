@@ -139,7 +139,7 @@ The default generation setup follows the configuration used in the released Mult
 | Building height | 20–60 m |
 | BS position | `(0, 0, 65) m` |
 | BS array | UPA `64 × 64`, half-wavelength spacing |
-| Carrier frequency | 7 GHz |
+| Central carrier frequency | 7 GHz |
 | Subcarrier spacing | 30 kHz |
 | Number of subcarriers | 128 |
 | Trajectory length | `T = 20` frames |
