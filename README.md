@@ -132,9 +132,6 @@ The dataset also preserves temporal continuity along UAV trajectories. Consecuti
 
 ![Temporal consistency analysis](Figs/temporal_analysis1.png)
 
-**Figure:** Temporal consistency analysis of consecutive samples along trajectories.  
-(a) CDF of the adjacent spatial channel correlation coefficient.  
-(b)--(d) CDFs of the absolute variations of the selected near-field beam indices in the azimuth, zenith, and range dimensions, respectively.
 
 ## 📦 Dataset
 
