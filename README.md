@@ -1,6 +1,6 @@
 # Multimodal Low-Altitude Near-Field Dataset Generator
 
-This repository provides a complete pipeline for generating, integrating, and analyzing a large-scale multimodal dataset for low-altitude near-field wireless communications. The generated dataset, **Multimodal-NF**, contains synchronized near-field wireless channels, RGB images, LiDAR point clouds, and trajectory-level information for low-altitude UAV communication scenarios.
+This repository provides a complete pipeline for generating, integrating, and analyzing a large-scale multimodal dataset for low-altitude near-field wireless communications. The generated dataset, **Multimodal-NF**, contains synchronized near-field wireless channels, RGB images, LiDAR point clouds, and trajectory-level information for low-altitude UAV communication scenarios. Compared with existing wireless datasets, Multimodal-NF jointly supports near-field XL-MIMO, 3D low-altitude trajectories, customizable scene generation, and synchronized CSI, RGB, LiDAR, GPS, and wireless labels.
 
 ## 🛠️ Environment Requirements
 
@@ -99,6 +99,55 @@ All trajectories contain **T = 20 frames** with a sampling interval of **0.1 s**
 
 Overall, the dataset contains **215,400 samples**, including **201,075 LoS samples** and **14,325 NLoS samples**. The LoS and NLoS ratios are **93.35%** and **6.65%**, respectively, which reflects typical low-altitude communication environments where the air-to-ground link is often dominated by LoS propagation while still containing non-negligible blockage and multipath cases.
 
+## 🧩 Dataset Contents
+
+Each sample in **Multimodal-NF** contains synchronized wireless and multimodal observations. The wireless data provide near-field CSI and beam-related labels, while the sensing modalities provide spatial and environmental side information for multimodal learning.
+
+| Modality | Data Components & Attributes |
+|---|---|
+| Wireless | CSI tensor `H ∈ R^{M × K × T × 2}` with real and imaginary parts stacked, binary LoS indicator, Top-5 beam indices, and normalized beamforming gains |
+| GPS | 3D coordinates with Gaussian positioning noise |
+| Vision | RGB image with FoV = 90° and resolution `512 × 512` |
+| LiDAR | 10,000-point cloud co-located with the camera |
+| Label | Trajectory ID corresponding to 10 UAV kinematic modes |
+
+## 🛩️ UAV Trajectory Modes
+
+The dataset includes 10 UAV trajectory modes to emulate diverse low-altitude mobility patterns. These modes are further divided into easy and hard settings. The hard modes introduce rapid mobility or blockage-prone propagation conditions, while the easy modes represent relatively stable flight patterns.
+
+| ID | Trajectory | Horizontal / Vertical Velocity (m/s) | Altitude (m) | Description |
+|---:|---|---|---|---|
+| 1 | Zigzag | 0–5 / 0–1.5 | 5–15 | Sinusoidal weaving motion |
+| 2 | Wall Hug | 5–15 / 0 | 5–20 | Building perimeter tracking |
+| 3 | Inspect | 0 / 0–2 | 2–60 | Vertical facade scanning |
+| 4 | Sudden Turn | 8–12 / 0–2 | 5–45 | Street flight with abrupt reversals |
+| 5 | Street Patrol | 8–12 / 0–2 | 5–45 | Dynamic road network traversal |
+| 6 | Hover | 0 / 0–0.5 | 10–80 | Quasi-stationary 3D drift |
+| 7 | City Cruise | 8–15 / 0 | 30–60 | Smooth linear crossing |
+| 8 | Orbit | 0–10 / 0 | 30–60 | Circular flight around building |
+| 9 | Fast Transit | 15–25 / 0 | 50–80 | High-speed transit |
+| 10 | Scan | 0–12 / 0 | 50–80 | Back-and-forth grid sweeping |
+
+
+## ⚙️ Generation Configuration
+
+The default generation setup follows the configuration used in the released Multimodal-NF dataset.
+
+| Item | Configuration |
+|---|---|
+| Scene size | `120 m × 120 m` observed region |
+| Building height | 20–60 m |
+| BS position | `(0, 0, 65) m` |
+| BS array | UPA `64 × 64`, half-wavelength spacing |
+| Carrier frequency | 7 GHz |
+| Subcarrier spacing | 30 kHz |
+| Number of subcarriers | 128 |
+| Trajectory length | `T = 20` frames |
+| Sampling interval | 0.1 s |
+| UAV altitude | 5–80 m |
+| Ray tracing | LoS and specular reflections enabled |
+| Maximum interaction depth | 3 |
+| Main materials | ITU-concrete, ITU-marble, ITU-wood, ITU-metal, medium dry ground |
 ### Dataset Splits and Sample Statistics
 
 | Split | Mode | Cities | Trajectories | Total Samples | LoS Samples | NLoS Samples |
