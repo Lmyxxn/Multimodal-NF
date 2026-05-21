@@ -1,156 +1,162 @@
-# Multimodal Low-Altitude Near-Field Dataset Generator
+# Multimodal-NF Dataset Generator
 
-This repository provides a complete pipeline for generating, integrating, and analyzing a large-scale multimodal dataset for low-altitude near-field wireless communications. The generated dataset, **Multimodal-NF**, contains synchronized near-field wireless channels, RGB images, LiDAR point clouds, and trajectory-level information for low-altitude UAV communication scenarios. Compared with existing wireless datasets, Multimodal-NF jointly supports near-field XL-MIMO, 3D low-altitude trajectories, customizable scene generation, and synchronized CSI, RGB, LiDAR, GPS, and wireless labels.
+**Multimodal-NF** is a generation pipeline for low-altitude near-field XL-MIMO sensing and communications. It produces synchronized **near-field CSI**, **RGB images**, **LiDAR point clouds**, **GPS/trajectory information**, and **wireless labels** for UAV communication scenarios.
 
-## 🛠️ Environment Requirements
+## 🔗 Links
 
-The project is built using **Python 3.10.18** and is optimized for CUDA 12.1. Ensure your system has the following dependencies installed:
+- **Project page:** https://lmyxxn.github.io/6GXLMIMODatasets/
+- **Dataset and codebooks:** https://huggingface.co/datasets/lmyxxn/MultimodalNF
+- **Paper:** https://arxiv.org/abs/2603.28280
 
-**Core Simulation & Ray Tracing:**
+## 1. Technical Scope
 
-* NVIDIA Sionna (`sionna-rt==1.1.0`)
-* Mitsuba 3
+The pipeline supports:
 
-**Deep Learning & GPU:**
+- Near-field XL-MIMO channel generation with a BS UPA array.
+- Low-altitude UAV trajectory generation and synchronization.
+- Ray-tracing-based wireless channel synthesis using Sionna RT.
+- Synchronized RGB and LiDAR sensing data generation.
+- Beam-label generation with near-field beamforming codebooks.
+- Dataset packing into `.h5` files for downstream learning tasks.
+- Statistical analysis of LoS/NLoS ratio, multipath statistics, delay spread, and temporal consistency.
 
-* `tensorflow==2.13.1`
-* `torch==2.4.1+cu121`
-* `torchaudio==2.4.1+cu121`
-* `torchvision==0.19.1+cu121`
-* `nvidia-cublas-cu12==12.1.3.1`
+## 2. Environment
 
-**Data Processing & Vision:**
+The default environment is based on **Python 3.10.18** and **CUDA 12.1**.
 
-* `open3d==0.19.0`
-* `opencv-python==4.12.0.88`
-* `osmnx`
-* `geopandas`
-* PyVista and h5py are also required for 3D visualization and data packing.
+Main dependencies:
 
-## 🚀 Workflow
+```text
+sionna-rt==1.1.0
+mitsuba
+tensorflow==2.13.1
+torch==2.4.1+cu121
+torchvision==0.19.1+cu121
+torchaudio==2.4.1+cu121
+open3d==0.19.0
+opencv-python==4.12.0.88
+osmnx
+geopandas
+pyvista
+h5py
+numpy
+matplotlib
+```
 
-### 1. Scene Generation
+Install the core Python packages according to your CUDA/PyTorch environment. The PyTorch CUDA version should match the local GPU driver.
 
-**Run:** `OSM_to_SionnaScene.ipynb`
+## 3. Repository Workflow
 
-**Description:** Generate and customize the 3D communication scene and UAV trajectory. Environment boundaries, layouts, base-station position, and trajectory settings can be defined in this notebook.
+### Step 1: Scene and Trajectory Generation
 
-### 2. Channel & Multimodal Data Synthesis
+Run:
 
-**Run:**
+```text
+OSM_to_SionnaScene.ipynb
+```
+
+This notebook constructs the 3D urban scene, defines the simulation boundary, places the BS, and generates UAV trajectories.
+
+### Step 2: Channel and Multimodal Data Generation
+
+Run:
 
 ```bash
 python channel_generation.py
 ```
 
-**Description:** Synthesize near-field wireless channels and generate synchronized multimodal data, including images and LiDAR point clouds.
+This script generates near-field wireless channels and synchronized multimodal data.
 
-**Customization:** Modify this script to configure antenna arrays, carrier frequencies, UAV trajectories, and ray-tracing parameters.
+Main configurable items include:
 
-This step utilizes the provided beam codebooks:
+- Carrier frequency
+- BS antenna array size
+- UAV trajectory mode
+- Scene geometry
+- Ray-tracing depth
+- LoS/reflection settings
+- Beam codebook path
 
-* `upa64x64_NF_codebook.pkl`
-* `upa64x64_NF_codebook_small.pkl`
+Required codebooks:
 
-### 3. Data Integration
+```text
+upa64x64_NF_codebook.pkl
+upa64x64_NF_codebook_small.pkl
+```
 
-**Run:**
+Download them from:
+
+```text
+https://huggingface.co/datasets/lmyxxn/MultimodalNF
+```
+
+and place them in the main project folder.
+
+### Step 3: Data Packing
+
+Run:
 
 ```bash
 python pick_image_to_h5.py
 python pick_lidar_to_h5.py
 ```
 
-**Description:** Process and pack the generated image and LiDAR point cloud data into efficient `.h5` files for easier storage, handling, and model training.
+These scripts pack RGB images and LiDAR point clouds into `.h5` files.
 
-### 4. Statistical Analysis
+### Step 4: Dataset Statistics
 
-**Run:**
+Run:
 
 ```bash
 python stastics_analysis.py
 ```
 
-**Description:** Analyze dataset statistics and verify data distribution. This script outputs:
+Generated outputs include:
 
-* `dataset_comprehensive_stats.csv`
-* `dataset_health_dashboard.png`
+```text
+dataset_comprehensive_stats.csv
+dataset_health_dashboard.png
+```
 
-These files can be used for dataset integrity checking and statistical visualization.
+## 4. Dataset Configuration
 
-## 📂 Codebooks
+Default generation setup:
 
-Two pre-computed near-field beamforming codebooks are provided:
-
-* `upa64x64_NF_codebook.pkl`: Dense codebook with size `90 × 45 × 16`.
-* `upa64x64_NF_codebook_small.pkl`: Compact codebook with size `20 × 20 × 10`, suitable for faster testing and lower memory consumption.
-
-The codebooks are available at:
-
-https://huggingface.co/datasets/lmyxxn/MultimodalNF
-
-Please download them and move them to the main folder before running the channel generation scripts.
-
-## 📊 Dataset Overview
-
-The generated **Multimodal-NF** dataset is designed for near-field low-altitude sensing and communications with a BS equipped with a **UPA 64 × 64** antenna array. The dataset is split by cities into training, validation, and testing sets to evaluate the generalization capability across different urban environments.
-
-All trajectories contain **T = 20 frames** with a sampling interval of **0.1 s**. The UAV altitude ranges from **5 m to 80 m**. The BS UPA is located at **(0, 0, 65) m**. The dataset is split by cities into **Train/Val/Test = 22/4/4**.
-
-Overall, the dataset contains **215,400 samples**, including **201,075 LoS samples** and **14,325 NLoS samples**. The LoS and NLoS ratios are **93.35%** and **6.65%**, respectively, which reflects typical low-altitude communication environments where the air-to-ground link is often dominated by LoS propagation while still containing non-negligible blockage and multipath cases.
-
-## 🧩 Dataset Contents
-
-Each sample in **Multimodal-NF** contains synchronized wireless and multimodal observations. The wireless data provide near-field CSI and beam-related labels, while the sensing modalities provide spatial and environmental side information for multimodal learning.
-
-| Modality | Data Components & Attributes |
+| Item | Value |
 |---|---|
-| Wireless | CSI tensor `H ∈ R^{M × K × T × 2}` with real and imaginary parts stacked, binary LoS indicator, Top-5 beam indices, and normalized beamforming gains |
-| GPS | 3D coordinates with Gaussian positioning noise |
-| Vision | RGB image with FoV = 90° and resolution `512 × 512` |
-| LiDAR | 10,000-point cloud co-located with the camera |
-| Label | Trajectory ID corresponding to 10 UAV kinematic modes |
-
-## 🛩️ UAV Trajectory Modes
-
-The dataset includes 10 UAV trajectory modes to emulate diverse low-altitude mobility patterns. These modes are further divided into easy and hard settings. The hard modes introduce rapid mobility or blockage-prone propagation conditions, while the easy modes represent relatively stable flight patterns.
-
-| ID | Trajectory | Horizontal / Vertical Velocity (m/s) | Altitude (m) | Description |
-|---:|---|---|---|---|
-| 1 | Zigzag | 0–5 / 0–1.5 | 5–15 | Sinusoidal weaving motion |
-| 2 | Wall Hug | 5–15 / 0 | 5–20 | Building perimeter tracking |
-| 3 | Inspect | 0 / 0–2 | 2–60 | Vertical facade scanning |
-| 4 | Sudden Turn | 8–12 / 0–2 | 5–45 | Street flight with abrupt reversals |
-| 5 | Street Patrol | 8–12 / 0–2 | 5–45 | Dynamic road network traversal |
-| 6 | Hover | 0 / 0–0.5 | 10–80 | Quasi-stationary 3D drift |
-| 7 | City Cruise | 8–15 / 0 | 30–60 | Smooth linear crossing |
-| 8 | Orbit | 0–10 / 0 | 30–60 | Circular flight around building |
-| 9 | Fast Transit | 15–25 / 0 | 50–80 | High-speed transit |
-| 10 | Scan | 0–12 / 0 | 50–80 | Back-and-forth grid sweeping |
-
-
-## ⚙️ Generation Configuration
-
-The default generation setup follows the configuration used in the released Multimodal-NF dataset.
-
-| Item | Configuration |
-|---|---|
-| Scene size | `120 m × 120 m` observed region |
-| Building height | 20–60 m |
+| Scene size | `120 m × 120 m` |
+| Building height | `20–60 m` |
 | BS position | `(0, 0, 65) m` |
 | BS array | UPA `64 × 64`, half-wavelength spacing |
-| Central carrier frequency | 7 GHz |
-| Subcarrier spacing | 30 kHz |
-| Number of subcarriers | 128 |
+| Carrier frequency | `7 GHz` |
+| Subcarrier spacing | `30 kHz` |
+| Number of subcarriers | `128` |
 | Trajectory length | `T = 20` frames |
-| Sampling interval | 0.1 s |
-| UAV altitude | 5–80 m |
-| Ray tracing | LoS and specular reflections enabled |
-| Maximum interaction depth | 3 |
-| Main materials | ITU-concrete, ITU-marble, ITU-wood, ITU-metal, medium dry ground |
-### Dataset Splits and Sample Statistics
+| Sampling interval | `0.1 s` |
+| UAV altitude | `5–80 m` |
+| Ray tracing | LoS and specular reflections |
+| Maximum interaction depth | `3` |
+| Materials | ITU-concrete, ITU-marble, ITU-wood, ITU-metal, medium dry ground |
 
-| Split | Mode | Cities | Trajectories | Total Samples | LoS Samples | NLoS Samples |
+## 5. Dataset Schema
+
+Each sample contains synchronized wireless and sensing modalities.
+
+| Modality | Components |
+|---|---|
+| Wireless | CSI tensor `H ∈ R^{M × K × T × 2}`, binary LoS label, Top-5 beam indices, normalized beamforming gains |
+| GPS | Noisy 3D UAV coordinates |
+| RGB | Camera image, FoV `90°`, resolution `512 × 512` |
+| LiDAR | 10,000-point cloud co-located with the camera |
+| Trajectory | Trajectory ID among 10 UAV kinematic modes |
+
+The complex CSI is stored with real and imaginary parts stacked in the last dimension.
+
+## 6. Dataset Splits
+
+The released dataset is split by cities to test cross-environment generalization.
+
+| Split | Mode | Cities | Trajectories | Samples | LoS | NLoS |
 |---|---|---:|---:|---:|---:|---:|
 | Train | Easy | 22 | 2,614 | 52,280 | 49,923 | 2,357 |
 | Train | Hard | 22 | 5,185 | 103,700 | 94,251 | 9,449 |
@@ -160,43 +166,72 @@ The default generation setup follows the configuration used in the released Mult
 | Test | Hard | 4 | 1,001 | 20,020 | 19,007 | 1,013 |
 | **Total** | -- | **30** | **10,770** | **215,400** | **201,075** | **14,325** |
 
-### Multipath Statistics
+Overall LoS/NLoS ratio:
 
-The generated channels are characterized by sparse but highly LoS-dominant low-altitude propagation. The average number of paths is **2.53**, while the median number of paths is **2**, indicating that most samples are dominated by a small number of strong propagation components. The RMS delay spread is generally small, with a mean value of **2.17 ns**, while the maximum excess delay can be much larger due to occasional long-delay reflected paths.
+```text
+LoS:  93.35%
+NLoS:  6.65%
+```
+
+## 7. UAV Trajectory Modes
+
+| ID | Mode | Horizontal / Vertical Velocity | Altitude | Description |
+|---:|---|---|---|---|
+| 1 | Zigzag | `0–5 / 0–1.5 m/s` | `5–15 m` | Sinusoidal weaving |
+| 2 | Wall Hug | `5–15 / 0 m/s` | `5–20 m` | Building perimeter tracking |
+| 3 | Inspect | `0 / 0–2 m/s` | `2–60 m` | Vertical facade scanning |
+| 4 | Sudden Turn | `8–12 / 0–2 m/s` | `5–45 m` | Abrupt street-level turns |
+| 5 | Street Patrol | `8–12 / 0–2 m/s` | `5–45 m` | Road-network traversal |
+| 6 | Hover | `0 / 0–0.5 m/s` | `10–80 m` | Quasi-stationary drift |
+| 7 | City Cruise | `8–15 / 0 m/s` | `30–60 m` | Smooth linear crossing |
+| 8 | Orbit | `0–10 / 0 m/s` | `30–60 m` | Circular flight |
+| 9 | Fast Transit | `15–25 / 0 m/s` | `50–80 m` | High-speed transition |
+| 10 | Scan | `0–12 / 0 m/s` | `50–80 m` | Grid scanning |
+
+## 8. Multipath Statistics
+
+The dataset is LoS-dominant but includes non-negligible reflection and blockage cases.
 
 | Metric | Mean | Median | 90th Percentile |
 |---|---:|---:|---:|
 | Number of paths | 2.53 | 2.00 | 4.00 |
-| RMS delay spread (ns) | 2.17 | 1.38 | 4.81 |
-| Maximum excess delay (ns) | 112.77 | 95.68 | 244.95 |
-| PDP T50 (ns) | 1.03 | -- | -- |
-| PDP T90 (ns) | 2.28 | -- | -- |
-| K-factor (dB) | 52.01 | 59.72 | 75.30 |
+| RMS delay spread | 2.17 ns | 1.38 ns | 4.81 ns |
+| Maximum excess delay | 112.77 ns | 95.68 ns | 244.95 ns |
+| PDP T50 | 1.03 ns | -- | -- |
+| PDP T90 | 2.28 ns | -- | -- |
+| K-factor | 52.01 dB | 59.72 dB | 75.30 dB |
 
-The high K-factor further confirms the LoS-dominant nature of the dataset. Meanwhile, the non-zero NLoS ratio and the large 90th-percentile maximum excess delay show that the dataset still includes challenging multipath and blockage conditions.
+## 9. Temporal Consistency
 
-### Temporal Consistency Analysis
+The dataset preserves trajectory-level continuity. Consecutive frames have high spatial-domain channel correlation, and near-field beam indices evolve smoothly across azimuth, zenith, and range dimensions.
 
-The dataset also preserves temporal continuity along UAV trajectories. Consecutive samples are highly correlated in the spatial channel domain, while the selected near-field beam indices vary smoothly across adjacent frames in the azimuth, zenith, and range dimensions. This makes the dataset suitable not only for snapshot-based tasks, but also for trajectory-level learning, temporal channel prediction, beam tracking, and multimodal sensing-aided communication.
+This supports tasks such as:
+
+- Temporal channel prediction
+- Beam tracking
+- Multimodal sensing-aided communication
+- UAV mobility-aware link adaptation
 
 ![Temporal consistency analysis](Figs/temporal_analysis1.png)
 
+## 10. Codebooks
 
-## 📦 Dataset
+Provided near-field beamforming codebooks:
 
-The dataset is available at:
+| File | Size | Usage |
+|---|---:|---|
+| `upa64x64_NF_codebook.pkl` | `90 × 45 × 16` | Dense beam-label generation |
+| `upa64x64_NF_codebook_small.pkl` | `20 × 20 × 10` | Fast testing and low-memory runs |
 
+Download:
+
+```text
 https://huggingface.co/datasets/lmyxxn/MultimodalNF
+```
 
-More details and citations can be found at:
+## 11. Citation
 
-https://lmyxxn.github.io/6GXLMIMODatasets/
-
-## 🌟 Welcome & Citation
-
-We highly encourage researchers and developers to explore, experiment, and build upon this dataset and generation toolchain. Whether you are testing new channel estimation algorithms, exploring multimodal foundation models, or analyzing near-field XL-MIMO characteristics, we hope this repository serves as a valuable resource for your work.
-
-If you find our code, dataset, or codebooks useful in your research or projects, please consider citing our paper:
+If you use this dataset or generation pipeline, please cite:
 
 ```bibtex
 @article{Li2026MultimodalNF,
