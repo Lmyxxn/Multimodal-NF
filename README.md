@@ -2,6 +2,8 @@
 
 **Multimodal-NF** is a generation pipeline for low-altitude near-field XL-MIMO sensing and communications. It produces synchronized **near-field CSI**, **RGB images**, **LiDAR point clouds**, **GPS/trajectory information**, and **wireless labels** for UAV communication scenarios.
 
+This README provides a concise overview of the dataset generation workflow, environment setup, data schema, and basic statistics. For more detailed descriptions, visual examples, benchmark tasks, and dataset documentation, please refer to our project website: **https://lmyxxn.github.io/6GXLMIMODatasets/**
+
 ## 🔗 Links
 
 - **Project page:** https://lmyxxn.github.io/6GXLMIMODatasets/
