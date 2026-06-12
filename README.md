@@ -235,10 +235,12 @@ If you use this dataset or generation pipeline, please cite:
 
 ```bibtex
 @article{Li2026MultimodalNF,
-  author  = {Li, M. and Lu, Q. and Tian, J. and Hu, H. and Han, Y. and Li, X. and Wen, C.-K. and Jin, S.},
-  title   = {{Multimodal-NF: A Wireless Dataset for Near-Field Low-Altitude Sensing and Communications}},
-  journal = {arXiv preprint arXiv:2603.28280},
-  year    = {2026},
-  url     = {https://arxiv.org/abs/2603.28280}
+author    = {M. Li and Q. Lu and J. Tian and H. Hu and Y. Han and X. Li and C.-K. Wen and S. Jin},
+title     = {{Multimodal-NF}: A wireless dataset for near-field low-altitude sensing and communications},
+journal   = {IEEE Wireless Communications Letters},
+note      = {early access},
+year      = {2026},
+doi       = {10.1109/LWC.2026.3702704}
 }
+
 ```
