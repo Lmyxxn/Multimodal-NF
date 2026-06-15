@@ -10,7 +10,7 @@ This README provides a concise overview of the dataset generation workflow, envi
 - **Dataset and codebooks:** https://huggingface.co/datasets/lmyxxn/MultimodalNF
 - **Paper:** https://ieeexplore.ieee.org/abstract/document/11558356
 
-## 1. Technical Scope
+## 1. Overview
 
 The pipeline supports:
 
