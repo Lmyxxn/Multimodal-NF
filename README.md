@@ -236,7 +236,7 @@ https://huggingface.co/datasets/lmyxxn/MultimodalNF
 If you use this dataset or generation pipeline, please cite:
 
 ```bibtex
-@article{Li2026MultimodalNF,
+@article{2026MultimodalNF,
 author  = {M. Li and Q. Lu and J. Tian and H. Hu and Y. Han and X. Li and C.-K. Wen and S. Jin},
 title   = {{Multimodal-NF}: A Wireless Dataset for Near-Field Low-Altitude Sensing and Communications},
 journal = {IEEE Wireless Communications Letters},
