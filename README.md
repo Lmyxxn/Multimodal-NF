@@ -47,7 +47,7 @@ matplotlib
 
 Install the core Python packages according to your CUDA/PyTorch environment. The PyTorch CUDA version should match the local GPU driver.
 
-## 3. Repository Workflow
+## 3. Dataset Generation Workflow
 
 ### Step 1: Scene and Trajectory Generation
 
