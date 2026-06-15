@@ -8,7 +8,7 @@ This README provides a concise overview of the dataset generation workflow, envi
 
 - **Project page:** https://lmyxxn.github.io/6GXLMIMODatasets/
 - **Dataset and codebooks:** https://huggingface.co/datasets/lmyxxn/MultimodalNF
-- **Paper:** https://arxiv.org/abs/2603.28280
+- **Paper:** https://ieeexplore.ieee.org/abstract/document/11558356
 
 ## 1. Technical Scope
 
@@ -237,12 +237,13 @@ If you use this dataset or generation pipeline, please cite:
 
 ```bibtex
 @article{Li2026MultimodalNF,
-author    = {M. Li and Q. Lu and J. Tian and H. Hu and Y. Han and X. Li and C.-K. Wen and S. Jin},
-title     = {{Multimodal-NF}: A wireless dataset for near-field low-altitude sensing and communications},
-journal   = {IEEE Wireless Communications Letters},
-note      = {early access},
-year      = {2026},
-doi       = {10.1109/LWC.2026.3702704}
+author  = {M. Li and Q. Lu and J. Tian and H. Hu and Y. Han and X. Li and C.-K. Wen and S. Jin},
+title   = {{Multimodal-NF}: A Wireless Dataset for Near-Field Low-Altitude Sensing and Communications},
+journal = {IEEE Wireless Communications Letters},
+year    = {2026},
+note    = {early access},
+doi     = {10.1109/LWC.2026.3702704}
 }
+
 
 ```
